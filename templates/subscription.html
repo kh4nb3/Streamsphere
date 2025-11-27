@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container pricing-section" style="margin-top: 60px;">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold mb-3">Choose Your Plan</h1>
+        <p class="lead">Join Streamsphere and enjoy unlimited entertainment.</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="pricing-card">
+                <h3 class="text-muted mb-4">Basic</h3>
+                <div class="price">€8.99<span>/mo</span></div>
+                <ul class="list-unstyled feature-list mb-5">
+                    <li><i class="fas fa-check"></i> 720p HD Streaming</li>
+                    <li><i class="fas fa-check"></i> Watch on 1 screen</li>
+                    <li><i class="fas fa-check"></i> Unlimited movies</li>
+                    <li><i class="fas fa-check"></i> Cancel anytime</li>
+                </ul>
+                <button class="btn btn-outline-primary w-100 py-2">Select Basic</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="pricing-card featured">
+                <div class="badge bg-primary mb-3">Most Popular</div>
+                <h3 class="text-white mb-4">Standard</h3>
+                <div class="price">€12.99<span>/mo</span></div>
+                <ul class="list-unstyled feature-list mb-5">
+                    <li><i class="fas fa-check"></i> 1080p Full HD</li>
+                    <li><i class="fas fa-check"></i> Watch on 2 screens</li>
+                    <li><i class="fas fa-check"></i> Unlimited movies</li>
+                    <li><i class="fas fa-check"></i> Cancel anytime</li>
+                </ul>
+                <button class="btn btn-primary w-100 py-2">Select Standard</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="pricing-card">
+                <h3 class="text-muted mb-4">Premium</h3>
+                <div class="price">€16.99<span>/mo</span></div>
+                <ul class="list-unstyled feature-list mb-5">
+                    <li><i class="fas fa-check"></i> 4K Ultra HD + HDR</li>
+                    <li><i class="fas fa-check"></i> Watch on 4 screens</li>
+                    <li><i class="fas fa-check"></i> Unlimited movies</li>
+                    <li><i class="fas fa-check"></i> Dolby Atmos Sound</li>
+                </ul>
+                <button class="btn btn-outline-primary w-100 py-2">Select Premium</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

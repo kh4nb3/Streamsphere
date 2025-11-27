@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-container">
+        <h2 class="text-center mb-4 fw-bold">Sign In</h2>
+        <form>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" placeholder="name@example.com">
+            </div>
+            <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-2 mb-3">Sign In</button>
+            <div class="d-flex justify-content-between text-muted small">
+                <div>
+                    <input type="checkbox" id="remember"> <label for="remember">Remember me</label>
+                </div>
+                <a href="#" class="text-decoration-none text-muted">Need help?</a>
+            </div>
+            <div class="mt-4 text-center text-muted">
+                New to Streamsphere? <a href="{% url 'signup' %}" class="text-white text-decoration-none">Sign up
+                    now</a>.
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

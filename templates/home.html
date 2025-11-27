@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">Unlimited movies, TV shows, and more</h1>
+        <p class="hero-desc">Watch anywhere. Cancel anytime. Ready to watch? Enter your email to create or restart your
+            membership.</p>
+        <a href="{% url 'subscription' %}" class="btn btn-primary btn-lg">Get Started <i
+                class="fas fa-chevron-right ms-2"></i></a>
+    </div>
+</div>
+
+<div class="movie-section">
+    <br><br>
+    <div class="row-title">Trending Now</div>
+    <div class="movie-container">
+        {% for movie in movies %}
+        <a href="{% url 'movie_detail' movie.id %}" class="movie-card">
+            <img src="{{ movie.image }}" alt="{{ movie.title }}" class="movie-img">
+            <div class="movie-overlay">
+                <div class="movie-title">{{ movie.title }}</div>
+                <div class="movie-meta">
+                    <span>{{ movie.year }}</span>
+                    <span><i class="fas fa-star text-warning"></i> 4.8</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="movie-section">
+    <div class="row-title">New Releases</div>
+    <div class="movie-container">
+        {% for movie in movies reversed %}
+        <a href="{% url 'movie_detail' movie.id %}" class="movie-card">
+            <img src="{{ movie.image }}" alt="{{ movie.title }}" class="movie-img">
+            <div class="movie-overlay">
+                <div class="movie-title">{{ movie.title }}</div>
+                <div class="movie-meta">
+                    <span>{{ movie.year }}</span>
+                    <span><i class="fas fa-star text-warning"></i> 4.5</span>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
