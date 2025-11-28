@@ -15,7 +15,10 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'home' %}">STREAMSPHERE</a>
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <img src="https://streamsphere-images.s3.us-east-1.amazonaws.com/static/logo.png" alt="Streamsphere Logo" height="60" class="me-2">
+                <span style="font-size: 1rem !important;">STREAMSPHERE</span>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
