@@ -26,7 +26,7 @@ def home(request):
     
     # If no new releases, show most recent
     if not new_releases.exists():
-        new_releases = Movie.objects.all().order_by('-created_at')[:8]
+        new_releases = Movie.objects.all().order_by('-year')[:8]
     
     context = {
         'featured_movies': featured_movies,
@@ -63,8 +63,8 @@ def movies_list(request):
         movies = movies.filter(subscription_required=subscription)
     
     # Sorting
-    sort_by = request.GET.get('sort', '-created_at')
-    valid_sorts = ['-created_at', 'title', '-year', '-view_count', '-user_ratings__rating']
+    sort_by = request.GET.get('sort', 'title')
+    valid_sorts = ['title', '-year', '-view_count', '-user_ratings__rating']
     if sort_by in valid_sorts:
         if sort_by == '-user_ratings__rating':
             movies = movies.annotate(avg_rating=Avg('user_ratings__rating')).order_by('-avg_rating')
@@ -115,7 +115,7 @@ def movie_detail(request, movie_id):
     recent_reviews = UserRating.objects.filter(
         movie=movie,
         review__isnull=False
-    ).exclude(review='').order_by('-created_at')[:5]
+    ).exclude(review='').order_by('-year')[:5]
     
     context = {
         'movie': movie,
@@ -325,8 +325,8 @@ def genre_movies(request, genre_id):
     movies = Movie.objects.filter(genres=genre)
     
     # Sort options
-    sort_by = request.GET.get('sort', '-created_at')
-    if sort_by in ['-created_at', 'title', '-year', '-average_rating']:
+    sort_by = request.GET.get('sort', 'title')
+    if sort_by in ['title', '-year', '-average_rating']:
         movies = movies.order_by(sort_by)
     
     # Pagination

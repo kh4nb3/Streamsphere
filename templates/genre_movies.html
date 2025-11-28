@@ -18,8 +18,8 @@
             <!-- Sort Options -->
             <div class="mb-4">
                 <label class="text-white me-3">Sort by:</label>
-                <a href="?sort=-created_at" 
-                   class="btn btn-sm {% if request.GET.sort == '-created_at' or not request.GET.sort %}btn-primary{% else %}btn-outline-secondary{% endif %}">Newest</a>
+                <a href="?sort=-year" 
+                   class="btn btn-sm {% if request.GET.sort == '-year' or not request.GET.sort %}btn-primary{% else %}btn-outline-secondary{% endif %}">Newest</a>
                 <a href="?sort=title" 
                    class="btn btn-sm {% if request.GET.sort == 'title' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Title</a>
                 <a href="?sort=-year" 

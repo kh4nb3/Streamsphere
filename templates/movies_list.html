@@ -49,8 +49,8 @@
             <!-- Sort Options -->
             <div class="mb-3">
                 <label>Sort by:</label>
-                <a href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if selected_genre %}genre={{ selected_genre }}&{% endif %}{% if selected_year %}year={{ selected_year }}&{% endif %}{% if selected_subscription %}subscription={{ selected_subscription }}&{% endif %}sort=-created_at" 
-                   class="btn btn-sm {% if sort_by == '-created_at' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Newest</a>
+                <a href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if selected_genre %}genre={{ selected_genre }}&{% endif %}{% if selected_year %}year={{ selected_year }}&{% endif %}{% if selected_subscription %}subscription={{ selected_subscription }}&{% endif %}sort=-year" 
+                   class="btn btn-sm {% if sort_by == '-year' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Newest</a>
                 <a href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if selected_genre %}genre={{ selected_genre }}&{% endif %}{% if selected_year %}year={{ selected_year }}&{% endif %}{% if selected_subscription %}subscription={{ selected_subscription }}&{% endif %}sort=title" 
                    class="btn btn-sm {% if sort_by == 'title' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Title</a>
                 <a href="?{% if search_query %}search={{ search_query }}&{% endif %}{% if selected_genre %}genre={{ selected_genre }}&{% endif %}{% if selected_year %}year={{ selected_year }}&{% endif %}{% if selected_subscription %}subscription={{ selected_subscription }}&{% endif %}sort=-year" 
