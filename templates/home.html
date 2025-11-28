@@ -15,17 +15,21 @@
     <br><br>
     <div class="row-title">Trending Now</div>
     <div class="movie-container">
-        {% for movie in movies %}
+        {% for movie in featured_movies %}
         <a href="{% url 'movie_detail' movie.id %}" class="movie-card">
-            <img src="{{ movie.image }}" alt="{{ movie.title }}" class="movie-img">
+            <img src="{{ movie.poster }}" alt="{{ movie.title }}" class="movie-img">
             <div class="movie-overlay">
                 <div class="movie-title">{{ movie.title }}</div>
                 <div class="movie-meta">
                     <span>{{ movie.year }}</span>
-                    <span><i class="fas fa-star text-warning"></i> 4.8</span>
+                    <span><i class="fas fa-star text-warning"></i> {{ movie.average_rating|default:"--" }}</span>
                 </div>
             </div>
         </a>
+        {% empty %}
+        <div class="empty-state">
+            <p class="text-center text-muted">No featured movies available.</p>
+        </div>
         {% endfor %}
     </div>
 </div>
@@ -33,17 +37,21 @@
 <div class="movie-section">
     <div class="row-title">New Releases</div>
     <div class="movie-container">
-        {% for movie in movies reversed %}
+        {% for movie in new_releases %}
         <a href="{% url 'movie_detail' movie.id %}" class="movie-card">
-            <img src="{{ movie.image }}" alt="{{ movie.title }}" class="movie-img">
+            <img src="{{ movie.poster }}" alt="{{ movie.title }}" class="movie-img">
             <div class="movie-overlay">
                 <div class="movie-title">{{ movie.title }}</div>
                 <div class="movie-meta">
                     <span>{{ movie.year }}</span>
-                    <span><i class="fas fa-star text-warning"></i> 4.5</span>
+                    <span><i class="fas fa-star text-warning"></i> {{ movie.average_rating|default:"--" }}</span>
                 </div>
             </div>
         </a>
+        {% empty %}
+        <div class="empty-state">
+            <p class="text-center text-muted">No new releases available.</p>
+        </div>
         {% endfor %}
     </div>
 </div>

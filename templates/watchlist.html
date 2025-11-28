@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="margin-top: 100px;">
+    <h1 class="mb-4">My Watchlist</h1>
+    
+    {% if page_obj %}
+    <div class="row">
+        {% for item in page_obj %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="watchlist-item">
+                <a href="{% url 'movie_detail' item.movie.id %}" class="movie-card-vertical">
+                    <img src="{{ item.movie.poster }}" alt="{{ item.movie.title }}" class="movie-img-vertical">
+                    <div class="movie-info">
+                        <h5 class="movie-title">{{ item.movie.title }}</h5>
+                        <div class="movie-meta">
+                            <span>{{ item.movie.year }}</span>
+                            <span><i class="fas fa-star text-warning"></i> {{ item.movie.average_rating|default:"--" }}</span>
+                        </div>
+                        <div class="movie-genres">
+                            {% for genre in item.movie.genres.all %}
+                            <span class="badge bg-secondary">{{ genre.name }}</span>
+                            {% endfor %}
+                        </div>
+                        <small class="text-muted">Added {{ item.added_at|timesince }} ago</small>
+                    </div>
+                </a>
+                <button class="btn btn-danger btn-sm remove-btn" onclick="removeFromWatchlist({{ item.movie.id }})">
+                    <i class="fas fa-trash"></i> Remove
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            
+            {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+            <li class="page-item active">
+                <span class="page-link">{{ num }}</span>
+            </li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+            
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    
+    {% else %}
+    <div class="text-center">
+        <i class="fas fa-heart fa-5x text-muted mb-3"></i>
+        <h3>Your watchlist is empty</h3>
+        <p class="text-muted">Add movies to your watchlist by clicking the heart icon on movie pages.</p>
+        <a href="{% url 'movies_list' %}" class="btn btn-primary">Browse Movies</a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function removeFromWatchlist(movieId) {
+    if (confirm('Remove this movie from your watchlist?')) {
+        fetch('/api/watchlist/toggle/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({movie_id: movieId})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        });
+    }
+}
+</script>
+
+<style>
+.watchlist-item {
+    position: relative;
+}
+
+.remove-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+}
+
+.movie-card-vertical {
+    display: block;
+    color: white;
+    text-decoration: none;
+    background: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.movie-card-vertical:hover {
+    transform: translateY(-5px);
+    text-decoration: none;
+    color: white;
+}
+
+.movie-img-vertical {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.movie-info {
+    padding: 15px;
+}
+
+.movie-title {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.movie-meta {
+    margin-bottom: 10px;
+}
+
+.movie-genres {
+    margin-top: 10px;
+}
+</style>
+{% endblock %}

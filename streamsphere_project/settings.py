@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-a-sei007tlt&6!r2-#pxg(5+#_&cbuuap^y6w%&(8@n(xb79_!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['streamsphere.mooo.com', '44.193.49.141', 'localhost']
+ALLOWED_HOSTS = ['streamsphere.mooo.com', '44.193.49.141', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -136,3 +136,14 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom user model
+AUTH_USER_MODEL = 'core.User'
+
+# Login/Logout redirect URLs
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+# Media files (for uploaded images)
+MEDIA_ROOT = BASE_DIR / 'media'

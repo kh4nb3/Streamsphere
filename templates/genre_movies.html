@@ -1,0 +1,257 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container" style="margin-top: 100px;">
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Genre Header -->
+            <div class="d-flex align-items-center mb-4">
+                <a href="{% url 'movies_list' %}" class="btn btn-outline-light me-3">
+                    <i class="fas fa-arrow-left"></i> Back to All Movies
+                </a>
+                <div>
+                    <h1 class="mb-1">{{ genre.name }} Movies</h1>
+                    <p class="text-muted mb-0">{{ page_obj.paginator.count }} movie{{ page_obj.paginator.count|pluralize }} found</p>
+                </div>
+            </div>
+
+            <!-- Sort Options -->
+            <div class="mb-4">
+                <label class="text-white me-3">Sort by:</label>
+                <a href="?sort=-created_at" 
+                   class="btn btn-sm {% if request.GET.sort == '-created_at' or not request.GET.sort %}btn-primary{% else %}btn-outline-secondary{% endif %}">Newest</a>
+                <a href="?sort=title" 
+                   class="btn btn-sm {% if request.GET.sort == 'title' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Title</a>
+                <a href="?sort=-year" 
+                   class="btn btn-sm {% if request.GET.sort == '-year' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Year</a>
+                <a href="?sort=-average_rating" 
+                   class="btn btn-sm {% if request.GET.sort == '-average_rating' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Rating</a>
+            </div>
+
+            <!-- Movies Grid -->
+            <div class="movie-grid">
+                {% for movie in page_obj %}
+                    <a href="{% url 'movie_detail' movie.id %}" class="movie-card-vertical">
+                        <img src="{{ movie.poster }}" alt="{{ movie.title }}" class="movie-img-vertical">
+                        <div class="movie-info">
+                            <h5 class="movie-title">{{ movie.title }}</h5>
+                            <div class="movie-meta">
+                                <span>{{ movie.year }}</span>
+                                <span><i class="fas fa-star text-warning"></i> {{ movie.average_rating|default:"--" }}</span>
+                            </div>
+                            <div class="movie-genres">
+                                {% for genre_item in movie.genres.all %}
+                                <span class="badge {% if genre_item.id == genre.id %}bg-primary{% else %}bg-secondary{% endif %}">{{ genre_item.name }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="subscription-badge">
+                                {% if movie.required_subscription == 'free' %}
+                                <span class="badge bg-success"><i class="fas fa-unlock"></i> Free</span>
+                                {% elif movie.required_subscription == 'basic' %}
+                                <span class="badge bg-info"><i class="fas fa-star"></i> Basic</span>
+                                {% elif movie.required_subscription == 'premium' %}
+                                <span class="badge bg-warning"><i class="fas fa-crown"></i> Premium</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                {% empty %}
+                <div class="col-12">
+                    <div class="text-center text-muted py-5">
+                        <i class="fas fa-film fa-3x mb-3"></i>
+                        <h4>No {{ genre.name }} Movies Found</h4>
+                        <p>We don't have any movies in this genre yet.</p>
+                        <a href="{% url 'movies_list' %}" class="btn btn-primary">Browse All Movies</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if request.GET.sort %}sort={{ request.GET.sort }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if request.GET.sort %}sort={{ request.GET.sort }}&{% endif %}page={{ num }}">{{ num }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if request.GET.sort %}sort={{ request.GET.sort }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <div class="sidebar">
+                <h4 class="text-white mb-3">Other Genres</h4>
+                <div class="list-group">
+                    {% for other_genre in all_genres %}
+                    <a href="{% url 'genre_movies' other_genre.id %}" 
+                       class="list-group-item list-group-item-action {% if other_genre.id == genre.id %}active{% endif %}">
+                        {{ other_genre.name }}
+                        <span class="badge bg-primary rounded-pill">{{ other_genre.movies.count }}</span>
+                    </a>
+                    {% endfor %}
+                </div>
+                
+                <!-- Quick Stats -->
+                <div class="card bg-dark mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-white">{{ genre.name }} Stats</h5>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <span class="stat-number">{{ page_obj.paginator.count }}</span>
+                                <span class="stat-label">Movie{{ page_obj.paginator.count|pluralize }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mood Recommendations -->
+                <div class="card bg-dark mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-white">Need a Suggestion?</h5>
+                        <p class="text-muted">Let us help you pick the perfect movie based on your mood.</p>
+                        <a href="{% url 'mood_recommendations' %}" class="btn btn-primary w-100">
+                            <i class="fas fa-magic"></i> Get Mood Recommendations
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.movie-card-vertical {
+    display: block;
+    color: white;
+    text-decoration: none;
+    background: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #333;
+}
+
+.movie-card-vertical:hover {
+    transform: translateY(-5px);
+    text-decoration: none;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.movie-img-vertical {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.movie-info {
+    padding: 15px;
+}
+
+.movie-title {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.movie-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.movie-genres .badge {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.subscription-badge {
+    margin-top: 10px;
+}
+
+.sidebar {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+.list-group-item {
+    background-color: #2a2a2a;
+    border-color: #333;
+    color: white;
+}
+
+.list-group-item:hover {
+    background-color: #3a3a3a;
+}
+
+.list-group-item.active {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+
+
+.pagination .page-link {
+    background-color: #2a2a2a;
+    border-color: #333;
+    color: white;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.pagination .page-link:hover {
+    background-color: #3a3a3a;
+    color: white;
+}
+</style>
+{% endblock %}
