@@ -186,6 +186,7 @@ class UserRating(models.Model):
         help_text="Rating from 1 to 5 stars"
     )
     review = models.TextField(blank=True)
+    year = models.PositiveIntegerField(default=2024)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -194,7 +195,7 @@ class UserRating(models.Model):
 
     class Meta:
         unique_together = ['user', 'movie']
-        ordering = ['-created_at']
+        ordering = ['-year']
 
 
 class Watchlist(models.Model):
