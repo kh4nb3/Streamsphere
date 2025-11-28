@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-a-sei007tlt&6!r2-#pxg(5+#_&cbuuap^y6w%&(8@n(xb79_!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['streamsphere.mooo.com']
+ALLOWED_HOSTS = ['streamsphere.mooo.com', '44.193.49.141', 'localhost']
 
 
 # Application definition
@@ -52,6 +52,15 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'streamsphere_project.urls'
+
+INSTALLED_APPS += ['storages']
+
+AWS_STORAGE_BUCKET_NAME = 'streamsphere-images'
+AWS_S3_REGION_NAME = 'eu-west-1'  # adjust to your region
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
 TEMPLATES = [
     {
